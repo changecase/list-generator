@@ -1,0 +1,5 @@
+ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed
+2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE
+2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE
+3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE
+

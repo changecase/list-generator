@@ -1,0 +1,11 @@
+import QtQuick 2.0
+
+ListModel{
+  {% for level in hierarchy_levels %}ListElement{
+    label: "{{category_name}}"
+    parentLabel: "{{parent_category}}"
+    childLabels: [{% for child in children %}
+      ListElement{childLabel: "{{child}}"}{% if children.size > 1 and child.index < children.size %},{% endif %}{% endfor %}
+    ]
+  }{% endfor %}
+}
