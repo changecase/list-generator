@@ -18,6 +18,3 @@ gem 'rspec', '3.6.0', :require => false
 
 gem 'liquid', '4.0.0'
 
-# for data structure
-
-gem 'rubytree', '0.9.7'
