@@ -22,9 +22,7 @@ class ListGenerator
     @content = []
 
     # Isoloate just the headers
-    data.headers.each do |h|
-      if /L\d+/.match(h) then @path_levels.push(h) end
-    end
+    @path_levels = get_headers(dataset: data, regular_expression: /L\d+/)
 
     # Add enough interior arrays for the number of category levels
     @path_levels.count.times do |level|
@@ -54,11 +52,7 @@ class ListGenerator
 
 
         # Get the index of the parent item (it is nil if the current item is a root level item)...
-        if @this_index > 0 
-          @parent_index = @this_index - 1
-        else
-          @parent_index = nil 
-        end
+        @parent_index = get_parent_index(@this_index)
         
         # ... and the index of the child items
         if @this_index < @path_levels.length - 1
@@ -99,7 +93,6 @@ class ListGenerator
         @nodules_already_in_this_level_of_category_array = @categories[@this_index].find{ |r| r.name }
         #@nodules_with_this_name = @categories[@this_index].find{ |r| r.name }
         @nodule_exists_already = defined?(@nodules_with_this_name.name) ? TRUE : FALSE
-        pry
 
         # Add the path node to the @categories array
         @nodule = PathNode.new( @identifier, @name, @parent, @children.uniq )
@@ -178,5 +171,25 @@ class ListGenerator
       path: @formatted[:categories].uniq,
       content: @formatted[:content]
     }
+  end
+
+  private def get_headers(dataset:, regular_expression:)
+    @headers = []
+
+    dataset.headers.each do |header|
+      if regular_expression.match(header) 
+        @headers.push(header)
+      end
+    end
+
+    return @headers
+  end
+
+  private def get_parent_index(current_index:)
+    if @current_index > 0
+      @parent_index = current_index - 1
+    else
+      @parent_index = nil
+    end
   end
 end
