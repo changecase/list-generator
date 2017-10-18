@@ -177,11 +177,11 @@ class ListGenerator
       return @headers
     end
 
-    private def get_parent_index(current_index:)
+    def get_parent_index(current_index:)
       current_index > 0 ? current_index - 1 : nil
     end
 
-    private def get_child_level(levels_of_hierarchy:, current_index:)
+    def get_child_level(levels_of_hierarchy:, current_index:)
       if current_index < (levels_of_hierarchy.length - 1)
         levels_of_hierarchy[current_index - 1]
       else
