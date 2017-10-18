@@ -17,12 +17,11 @@ class ListGenerator
   end
 
   def self.create(data:)
-    @path_levels = []
     @categories = []
     @content = []
 
     # Isoloate just the headers
-    @path_levels = get_headers(dataset: data, regular_expression: /L\d+/)
+    @path_levels = get_headers(dataset: data, regular_expression: 'L\d+')
 
     # Add enough interior arrays for the number of category levels
     @path_levels.count.times do |level|
@@ -36,7 +35,6 @@ class ListGenerator
     
     # For each line of the dataset
     data.each do |row|
-      @path = []
       # Take a look at the path for the content
       @path_levels.each do |path_level|
         @this_category = row[path_level]
@@ -51,23 +49,18 @@ class ListGenerator
         @name = row[path_level]
 
 
-        # Get the index of the parent item (it is nil if the current item is a root level item)...
-        @parent_index = get_parent_index(@this_index)
+        # Get the index of the parent item (it is nil if the current item 
+        # is a root level item)...
+        @parent_index = get_parent_index(current_index: @this_index)
         
         # ... and the index of the child items
-        if @this_index < @path_levels.length - 1
-          @child_index = @this_index + 1
-        else
-          @child_index = nil
-        end
+        @child_level = get_child_level(
+          levels_of_hierarchy: @path_levels,
+          current_index: @this_index
+        )
 
-        if @child_index != nil
-          @child_level = @path_levels[@child_index]
-        else
-          @child_level = nil
-        end
-
-        # Get the name of the parent item (it is an empth string if the current item is root level)
+        # Get the name of the parent item (it is an empth string if the 
+        # current item is root level)
         if !@parent_index.nil? 
           @parent = row[@path_levels[@parent_index]]
         else
@@ -90,14 +83,12 @@ class ListGenerator
         end
 
         # Test to see if the node is already in the array at this hierarchy level
-        @nodules_already_in_this_level_of_category_array = @categories[@this_index].find{ |r| r.name }
-        #@nodules_with_this_name = @categories[@this_index].find{ |r| r.name }
-        @nodule_exists_already = defined?(@nodules_with_this_name.name) ? TRUE : FALSE
+        @nodule_exists_at_this_level = @categories[@this_index].find{ |r| r.name }
 
         # Add the path node to the @categories array
         @nodule = PathNode.new( @identifier, @name, @parent, @children.uniq )
 
-        if @name != nil
+        if @name != nil 
           @categories[@this_index].push(
             @nodule
           )
@@ -142,12 +133,11 @@ class ListGenerator
       File.read("views/#{template}.liquid")
     )
 
-    model[:categories].each do |level|
-      puts "#{level}\n\n"
-      level.each do |category|
+    model[:categories].each do |hierarchy_level|
+      hierarchy_level.each do |category|
         @formatted[:categories].push(
           @template.render(
-            'hierarchy_levels'=> category,
+            'hierarchy_levels'=> hierarchy_level,
             'category_name'   => category.name,
             'parent_category' => category.parent,
             'children'        => category.children
@@ -173,23 +163,30 @@ class ListGenerator
     }
   end
 
-  private def get_headers(dataset:, regular_expression:)
-    @headers = []
+  # Private methods. These only need to be used to create users
+  class << self
+    private def get_headers(dataset:, regular_expression:)
+      @headers = []
 
-    dataset.headers.each do |header|
-      if regular_expression.match(header) 
-        @headers.push(header)
+      dataset.headers.each do |header|
+        if /#{regular_expression}/.match(header) 
+          @headers.push(header)
+        end
       end
+
+      return @headers
     end
 
-    return @headers
-  end
+    private def get_parent_index(current_index:)
+      current_index > 0 ? current_index - 1 : nil
+    end
 
-  private def get_parent_index(current_index:)
-    if @current_index > 0
-      @parent_index = current_index - 1
-    else
-      @parent_index = nil
+    private def get_child_level(levels_of_hierarchy:, current_index:)
+      if current_index < (levels_of_hierarchy.length - 1)
+        levels_of_hierarchy[current_index - 1]
+      else
+        nil
+      end
     end
   end
 end

@@ -151,16 +151,16 @@ describe ListGenerator do
                               "ListModel{\n" +
                               "  ListElement{\n" +
                               "    label: \"All Settings\"\n" +
-                              #"    parentLabel: \"\"\n" +
-                              #"    childLabels: [\n" +
-                              #"      ListElement{childLabel: \"Features\"}\n" +
-                              #"    ]\n" +
+                              "    parentLabel: \"\"\n" +
+                              "    childLabels: [\n" +
+                              "      ListElement{childLabel: \"Features\"}\n" +
+                              "    ]\n" +
                               "  }\n" +
                               "  ListElement{\n" +
                               "    label: \"Climate Settings\"\n" +
-                              #"    parentLabel: \"\"\n" +
-                              #"    childLabels: [\n" +
-                              #"    ]\n" +
+                              "    parentLabel: \"\"\n" +
+                              "    childLabels: [\n" +
+                              "    ]\n" +
                               "  }\n" +
                               "}" 
 
