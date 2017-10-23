@@ -241,48 +241,46 @@ describe ListGenerator do
 #    end
 #  end
 
-#  describe ".render" do
-#    context "given a hash model of the data" do
-#      before(:context) do
-#        @file = 
-#          "ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed\n" +
-#          "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE\n" +
-#          "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE\n" +
-#          "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
-#        @data = ListGenerator.load(data: @file)
-#        @list_model = ListGenerator.create(data: @data)
-#        @rendered_model = ListGenerator.render(model: @list_model, template: 'settings_list_model')
-#      end
-#
-#      it "renders a list model for the root" do
-#        @target = {
-#          list: {
-#            L1: [], L2: [], L3: [], L4: [], L5: []
-#          }, 
-#          content: []
-#        }
-#
-#        @target[:list][:L1] = "import QtQuick 2.0\n" +
-#                              "\n" +
-#                              "ListModel{\n" +
-#                              "  ListElement{\n" +
-#                              "    label: \"All Settings\"\n" +
-#                              "    parentLabel: \"\"\n" +
-#                              "    childLabels: [\n" +
-#                              "      ListElement{childLabel: \"Features\"}\n" +
-#                              "    ]\n" +
-#                              "  }\n" +
-#                              "  ListElement{\n" +
-#                              "    label: \"Climate Settings\"\n" +
-#                              "    parentLabel: \"\"\n" +
-#                              "    childLabels: [\n" +
-#                              "    ]\n" +
-#                              "  }\n" +
-#                              "}" 
-#
-#        puts @rendered_model[:path][0]
-#
-#        expect(@rendered_model[:path][0]).to eq @target[:list][:L1]
+  describe ".render" do
+    context "given a hash model of the data" do
+      before(:context) do
+        @file = 
+          "ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed\n" +
+          "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE\n" +
+          "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE\n" +
+          "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
+        @data = ListGenerator.load(data: @file)
+        @list_model = ListGenerator.create(dataset: @data)
+        @rendered_model = ListGenerator.render(model: @list_model, template: 'settings_list_model')
+      end
+
+      it "renders a list model for the root" do
+        @target = {
+          list: {
+            L1: [], L2: [], L3: [], L4: [], L5: []
+          }, 
+          content: []
+        }
+
+        @target[:list][:L1] = "import QtQuick 2.0\n" +
+                              "\n" +
+                              "ListModel{\n" +
+                              "  ListElement{\n" +
+                              "    label: \"All Settings\"\n" +
+                              "    parentLabel: \"\"\n" +
+                              "    childLabels: [\n" +
+                              "      ListElement{childLabel: \"Features\"}\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "  ListElement{\n" +
+                              "    label: \"Climate Settings\"\n" +
+                              "    parentLabel: \"\"\n" +
+                              "    childLabels: [\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "}\n" 
+
+        expect(@rendered_model[:path][0]).to eq @target[:list][:L1]
 ##        @target["list"]["L2"] = "import QtQuick 2.0\n" +
 ##                                "\n" +
 ##                                "ListModel{\n" +
@@ -371,7 +369,7 @@ describe ListGenerator do
 ##                                "  }\n" +
 ##                                "}" 
 #
-#      end
-#    end
-#  end
+      end
+    end
+  end
 end
