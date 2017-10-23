@@ -3,7 +3,7 @@ require 'liquid'
 
 class ListGenerator
   #PathNode    = Struct.new(:id, :name, :parent, :children)
-  PathNode    = Struct.new(:name, :parent)
+  PathNode    = Struct.new(:name, :parent, :children)
   ContentNode = Struct.new(:label, :control, :values, :parent)
 
   def self.load(data:)
@@ -33,11 +33,42 @@ class ListGenerator
     dataset.each do |row|
       # For each level of the headers
       @path_levels.each do |level|
-        @category = PathNode.new(row[level])
         @this_level_index = @path_levels.index(level)
+        @parent_level = @path_levels[@this_level_index - 1]
+        @child_level = @path_levels[@this_level_index + 1]
 
-        if !@category.name.nil? && !@categories[@this_level_index].include?(@category)
-          @categories[@this_level_index].push(@category)
+        @name = row[level]
+        @children = []
+
+        # Get the children of this node
+        @slice = dataset.select do |r|
+          r[level] == @name
+        end
+
+        # select the children's name
+        @slice.each do |r|
+          if @child_level != nil
+            @child_name = r[@child_level]
+            if @child_name != nil
+              @children.push(@child_name)
+            end
+          end
+        end
+
+        # Create a node
+        @category = PathNode.new(
+          row[level],
+          row[@parent_level],
+          @children.uniq
+        )
+
+        # Assuming there is a name for this category item
+        if !@category.name.nil? 
+          # and there isn't already a copy of this category item present
+          if !@categories[@this_level_index].include?(@category)
+            # add the new node
+            @categories[@this_level_index].push(@category)
+          end
         end
       end
     end

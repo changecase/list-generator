@@ -80,115 +80,129 @@ describe ListGenerator do
               "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
       @data = ListGenerator.load(data: @file)
       @model = ListGenerator.create(dataset: @data)
+      @level_1_categories = @model[:categories][0]
+      @level_2_categories = @model[:categories][1]
+      @level_3_categories = @model[:categories][2]
+      @level_4_categories = @model[:categories][3]
+      @level_5_categories = @model[:categories][4]
+      @level_6_categories = @model[:categories][5]
+      @level_7_categories = @model[:categories][6]
     end
     context "given parsed data" do
       it "returns an array that has the same number of first level values as the number of path levels" do
         expect(@model[:categories].length).to eq 7
       end
 
+      # Node names
       it "contains the top level hiearchy levels in the first category" do
-        @level_1_categories = @model[:categories][0]
         expect(@level_1_categories[0].name).to eq "All Settings"
         expect(@level_1_categories[1].name).to eq "Climate Settings"
       end
 
       it "contains the second level hierarchy levels in the second category" do
-        @level_2_categories = @model[:categories][1]
         expect(@level_2_categories[0].name).to eq "Features"
         expect(@level_2_categories[1]).to      be_nil
       end
 
       it "contains the third level hierarchy levels in the third category" do
-        @level_3_categories = @model[:categories][2]
         expect(@level_3_categories[0].name).to eq "Media"
         expect(@level_3_categories[1]).to      be_nil
       end
 
       it "contains the fourth level hierarchy levels in the fourth category" do
-        @level_4_categories = @model[:categories][3]
         expect(@level_4_categories[0].name).to eq "DAB"
         expect(@level_4_categories[1].name).to eq "AM-FM-HD Radio"
       end
 
       it "contains the fifth level hierarchy levels in the fifth category" do
-        @level_5_categories = @model[:categories][4]
         expect(@level_5_categories[0].name).to eq "TBD"
         expect(@level_5_categories[1]).to      be_nil
       end
 
       it "contains the sixth level hierarchy levels in the sixth category" do
-        @level_6_categories = @model[:categories][5]
         expect(@level_6_categories[0]).to      be_nil
         expect(@level_6_categories[1]).to      be_nil
       end
 
       it "contains the seventh level hierarchy levels in the seventh category" do
-        @level_7_categories = @model[:categories][6]
         expect(@level_7_categories[0]).to      be_nil
         expect(@level_7_categories[1]).to      be_nil
       end
 
+      # Node parents
       it "contains nil for the parent of the top level hierarchy" do
-        @level_1_categories = @model[:categories][0]
         expect(@level_1_categories[0].parent).to be_nil
         expect(@level_1_categories[1].parent).to be_nil
+      end
+
+      it "contains the right parent for the second category" do
+        expect(@level_2_categories[0].parent).to eq "All Settings"
+        expect(@level_2_categories[1]).to        be_nil
+      end
+
+      it "contains the right parent for the third category" do
+        expect(@level_3_categories[0].parent).to eq "Features"
+        expect(@level_3_categories[1]).to        be_nil
+      end
+
+      it "contains the right parent for the fourth category" do
+        expect(@level_4_categories[0].parent).to eq "Media"
+        expect(@level_4_categories[1].parent).to eq "Media"
+      end
+
+      it "contains the right parent for the fifth category" do
+        expect(@level_5_categories[0].parent).to eq "DAB"
+        expect(@level_5_categories[1]).to        be_nil
+      end
+
+      it "contains the right parent for the sixth category" do
+        expect(@level_6_categories[0]).to        be_nil
+        expect(@level_6_categories[1]).to        be_nil
+      end
+
+      it "contains the right parent for the seventh category" do
+        expect(@level_7_categories[0]).to        be_nil
+        expect(@level_7_categories[1]).to        be_nil
+      end
+
+      # Node children
+      it "contains the right children for the top level hierarchy" do
+        expect(@level_1_categories[0].children).to eq ["Features"]
+        expect(@level_1_categories[1].children).to eq []
+      end
+
+      it "contains the right children for the second category" do
+        expect(@level_2_categories[0].children).to eq ["Media"]
+        expect(@level_2_categories[1]).to          be_nil
+      end
+
+      it "contains the right children for the third category" do
+        expect(@level_3_categories[0].children).to eq ["DAB", "AM-FM-HD Radio"]
+        expect(@level_3_categories[1]).to          be_nil
+      end
+
+      it "contains the right children for the fourth category" do
+        expect(@level_4_categories[0].children).to eq ["TBD"]
+        expect(@level_4_categories[1].children).to eq []
+      end
+
+      it "contains the right children for the fifth category" do
+        expect(@level_5_categories[0].children).to eq []
+        expect(@level_5_categories[1]).to          be_nil
+      end
+
+      it "contains the right children for the sixth category" do
+        expect(@level_6_categories[0]).to          be_nil
+        expect(@level_6_categories[1]).to          be_nil
+      end
+
+      it "contains the right children for the seventh category" do
+        expect(@level_7_categories[0]).to          be_nil
+        expect(@level_7_categories[1]).to          be_nil
       end
     end
   end
 
-#  describe ".create" do
-#    context "given data and a format to convert to" do
-#      before(:context) do
-#        @file = "ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed\n" +
-#                "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE\n" +
-#                "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE\n" +
-#                "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
-#        @data = ListGenerator.load(data: @file)
-#        @data_model = ListGenerator.create(data: @data)
-#      end
-#
-#      it "creates an array of categories and their relationships" do
-#        @level_1_record_1 = { name: "All Settings",     parent: nil,            children: ["Features"] }
-#        @level_2_record_1 = { name: "Features",         parent: "All Settings", children: ["Media"] }
-#        @level_3_record_1 = { name: "Media",            parent: "Features",     children: ["DAB", "AM-FM-HD Radio"] }
-#        @level_4_record_1 = { name: "DAB",              parent: "Media",        children: ["TBD"] }
-#        @level_5_record_1 = { name: "TBD",              parent: "DAB",          children: [] }
-#        #@level_1_record_2 = { name: "All Settings",     parent: nil,            children: ["Features"] }
-#        #@level_2_record_2 = { name: "Features",         parent: "All Settings", children: ["Media"] }
-#        #@level_3_record_2 = { name: "Media",            parent: "Features",     children: ["DAB", "AM-FM-HD Radio"] }
-#        @level_4_record_2 = { name: "AM-FM-HD Radio",   parent: "Media",        children: [] }
-#        @level_1_record_3 = { name: "Climate Settings", parent: nil,            children: [] }
-#
-#        expect(@data_model[:categories][0][0].name).to eq @level_1_record_1[:name]
-#        expect(@data_model[:categories][1][0].name).to eq @level_2_record_1[:name]
-#        expect(@data_model[:categories][2][0].name).to eq @level_3_record_1[:name]
-#        expect(@data_model[:categories][3][0].name).to eq @level_4_record_1[:name]
-#        expect(@data_model[:categories][4][0].name).to eq @level_5_record_1[:name]
-#        #expect(@data_model[:categories][0][1].name).to eq @level_1_record_2[:name]
-#        #expect(@data_model[:categories][1][1].name).to eq @level_2_record_2[:name]
-#        #expect(@data_model[:categories][2][1].name).to eq @level_3_record_2[:name]
-#        #expect(@data_model[:categories][3][1].name).to eq @level_4_record_2[:name]
-#
-#        expect(@data_model[:categories][0][0].parent).to eq @level_1_record_1[:parent]
-#        expect(@data_model[:categories][1][0].parent).to eq @level_2_record_1[:parent]
-#        expect(@data_model[:categories][2][0].parent).to eq @level_3_record_1[:parent]
-#        expect(@data_model[:categories][3][0].parent).to eq @level_4_record_1[:parent]
-#        expect(@data_model[:categories][4][0].parent).to eq @level_5_record_1[:parent]
-#        #expect(@data_model[:categories][0][1].parent).to eq @level_1_record_2[:parent]
-#        #expect(@data_model[:categories][1][1].parent).to eq @level_2_record_2[:parent]
-#        #expect(@data_model[:categories][2][1].parent).to eq @level_3_record_2[:parent]
-#        #expect(@data_model[:categories][3][1].parent).to eq @level_4_record_2[:parent]
-#
-#        expect(@data_model[:categories][0][0].children).to eq @level_1_record_1[:children]
-#        expect(@data_model[:categories][1][0].children).to eq @level_2_record_1[:children]
-#        expect(@data_model[:categories][2][0].children).to eq @level_3_record_1[:children]
-#        expect(@data_model[:categories][3][0].children).to eq @level_4_record_1[:children]
-#        expect(@data_model[:categories][4][0].children).to eq @level_5_record_1[:children]
-#        #expect(@data_model[:categories][0][1].children).to eq @level_1_record_2[:children]
-#        #expect(@data_model[:categories][1][1].children).to eq @level_2_record_2[:children]
-#        #expect(@data_model[:categories][2][1].children).to eq @level_3_record_2[:children]
-#        #expect(@data_model[:categories][3][1].children).to eq @level_4_record_2[:children]
-#      end
 #
 #      it "creates an array of content items with the names of their parents, the type of content, and its value(s)" do
 #        @content_1 = { 
