@@ -51,10 +51,10 @@ class ListGenerator
 
         # Get the index of the parent item (it is nil if the current item 
         # is a root level item)...
-        @parent_index = get_parent_index(current_index: @this_index)
+        @parent_index = self.get_parent_index(current_index: @this_index)
         
         # ... and the index of the child items
-        @child_level = get_child_level(
+        @child_level = self.get_child_level(
           levels_of_hierarchy: @path_levels,
           current_index: @this_index
         )
