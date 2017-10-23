@@ -280,55 +280,61 @@ describe ListGenerator do
                               "  }\n" +
                               "}\n" 
 
+        @target[:list][:L2] = "import QtQuick 2.0\n" +
+                              "\n" +
+                              "ListModel{\n" +
+                              "  ListElement{\n" +
+                              "    label: \"Features\"\n" +
+                              "    parentLabel: \"All Settings\"\n" +
+                              "    childLabels: [\n" +
+                              "      ListElement{childLabel: \"Media\"}\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "}\n" 
+        @target[:list][:L3] = "import QtQuick 2.0\n" +
+                              "\n" +
+                              "ListModel{\n" +
+                              "  ListElement{\n" +
+                              "    label: \"Media\"\n" +
+                              "    parentLabel: \"Features\"\n" +
+                              "    childLabels: [\n" +
+                              "      ListElement{childLabel: \"DAB\"},\n" +
+                              "      ListElement{childLabel: \"AM-FM-HD Radio\"}\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "}\n" 
+        @target[:list][:L4] = "import QtQuick 2.0\n" +
+                              "\n" +
+                              "ListModel{\n" +
+                              "  ListElement{\n" +
+                              "    label: \"DAB\"\n" +
+                              "    parentLabel: \"Media\"\n" +
+                              "    childLabels: [\n" +
+                              "      ListElement{childLabel: \"TBD\"}\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "  ListElement{\n" +
+                              "    label: \"AM-FM-HD Radio\"\n" +
+                              "    parentLabel: \"Media\"\n" +
+                              "    childLabels: [\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "}\n" 
+        @target[:list][:L5] = "import QtQuick 2.0\n" +
+                              "\n" +
+                              "ListModel{\n" +
+                              "  ListElement{\n" +
+                              "    label: \"TBD\"\n" +
+                              "    parentLabel: \"DAB\"\n" +
+                              "    childLabels: [\n" +
+                              "    ]\n" +
+                              "  }\n" +
+                              "}\n" 
         expect(@rendered_model[:path][0]).to eq @target[:list][:L1]
-##        @target["list"]["L2"] = "import QtQuick 2.0\n" +
-##                                "\n" +
-##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"Features\"\n" +
-##                                "    parentLabel: \"All Settings\"\n" +
-##                                "    childLabels: [\n" +
-##                                "      ListElement{childLabel: \"Media\"}\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
-##                                "}" 
-##        @target["list"]["L3"] = "import QtQuick 2.0\n" +
-##                                "\n" +
-##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"Media\"\n" +
-##                                "    parentLabel: \"Features\"\n" +
-##                                "    childLabels: [\n" +
-##                                "      ListElement{childLabel: \"DAB\"},\n" +
-##                                "      ListElement{childLabel: \"AM-FM-HD Radio\"}\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
-##                                "}" 
-##        @target["list"]["L4"] = "import QtQuick 2.0\n" +
-##                                "\n" +
-##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"DAB\"\n" +
-##                                "    parentLabel: \"Media\"\n" +
-##                                "    childLabels: [\n" +
-##                                "      ListElement{childLabel: \"TBD\"}\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"AM-FM-HD Radio\"\n" +
-##                                "    parentLabel: \"Media\"\n" +
-##                                "  }\n" +
-##                                "}" 
-##        @target["list"]["L5"] = "import QtQuick 2.0\n" +
-##                                "\n" +
-##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"TBD\"\n" +
-##                                "    parentLabel: \"DAB\"\n" +
-##                                "    childLabels: [\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
-##                                "}" 
+        expect(@rendered_model[:path][1]).to eq @target[:list][:L2]
+        expect(@rendered_model[:path][2]).to eq @target[:list][:L3]
+        expect(@rendered_model[:path][3]).to eq @target[:list][:L4]
+        expect(@rendered_model[:path][4]).to eq @target[:list][:L5]
 ##        @target["content"][0] = "import QtQuick 2.0\n" +
 ##                                "\n" +
 ##                                "ListModel{\n" +
