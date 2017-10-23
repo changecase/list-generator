@@ -1,16 +1,19 @@
 import QtQuick 2.0
 
-ListModel {
+ListModel{
   ListElement{
     label: "{{content_label}}"
     parentLabel: "{{parent_name}}"
     parentLevel: {{parent_level}}
     interactionComponent: "{{control_type}}"
+    {%- comment %}
     values: [
-      {% for value in values %}
-        ListElement{value: "{{value}}"}{% if values.size > 1 %},{% endif %} 
+      {% for value in values -%}
+        ListElement{value: "{{value}}"}
+        {%- if value != values.last -%},{%- endif -%} 
       {% endfor %}
     ]
+    {% endcomment %}
     state: 0
   }
 }

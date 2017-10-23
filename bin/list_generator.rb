@@ -90,7 +90,10 @@ class ListGenerator
       end
 
       # Add the content node to the @content array
-      @nodule = ContentNode.new( @content_label, @content_control, @content_values, @content_parent)
+      @nodule = ContentNode.new( @content_label, 
+                                 @content_control, 
+                                 @content_values, 
+                                 @content_parent)
       @content.push(@nodule)
     end
 
@@ -98,19 +101,6 @@ class ListGenerator
       categories: @categories,
       content: @content
     }
-
-
-#
-#
-#      # Add the content node to the @content array
-#      @nodule = ContentNode.new( @content_label, @content_control, @content_values, @content_parent)
-#      @content.push(@nodule)
-#    end
-#
-#    return {
-#      categories: @categories.uniq,
-#      content: @content.uniq
-#    }
   end
 
   def self.render(model:, template:)
@@ -147,40 +137,20 @@ class ListGenerator
       )
     end
 
-#    @h_obj = []
-#    model[:categories].each do |hierarchy_level|
-#      @h_obj.push([])
-#      hierarchy_level.each do |category|
-##        @formatted[:categories].push(
-##          @template.render(
-##            'category_name'   => category.name,
-##            'parent_category' => category.parent,
-##            'children'        => category.children
-##          )
-##        )
-#      #@h_names.push({'name' => category.name})
-#      end
-#    end
-#
-#    @formatted[:categories].push(
-#      @template.render(
-#        'hierarchy_levels' => @h_obj
-#      )
-#    )
-
-#    model[:content].each do |item|
-#      @formatted[:content].push(
-#        @template.render(
-#          'parent_name'     => item.parent[:label],
-#          'parent_level'    => item.parent[:level],
-#          'control_type'    => item.control,
-#          'values'          => item.values
-#        )
-#      )
-#    end
+    model[:content].each do |item|
+      @formatted[:content].push(
+        @template.render(
+          'parent_name'     => item.parent[:label],
+          'parent_level'    => item.parent[:level],
+          'control_type'    => item.control,
+          'content_label'   => item.label,
+          'values'          => item.values
+        )
+      )
+    end
 
     return {
-      path: @formatted[:categories].uniq,
+      path: @formatted[:categories],
       content: @formatted[:content]
     }
   end

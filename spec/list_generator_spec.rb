@@ -205,7 +205,6 @@ describe ListGenerator do
       it "contains content nodes" do
         expect(@model[:content]).not_to be_nil
         expect(@model[:content].length).to eq 3
-        puts @model[:content]
       end
 
       it "creates an array of content items with the names of their parents, the type of content, and its value(s)" do
@@ -256,6 +255,7 @@ describe ListGenerator do
         @data = ListGenerator.load(data: @file)
         @list_model = ListGenerator.create(dataset: @data)
         @rendered_model = ListGenerator.render(model: @list_model, template: 'settings_list_model')
+        @rendered_content_model = ListGenerator.render(model: @list_model, template: 'settings_content_model')
       end
 
       it "renders a list model for the root" do
@@ -334,24 +334,29 @@ describe ListGenerator do
                               "    ]\n" +
                               "  }\n" +
                               "}\n" 
+
         expect(@rendered_model[:path][0]).to eq @target[:list][:L1]
         expect(@rendered_model[:path][1]).to eq @target[:list][:L2]
         expect(@rendered_model[:path][2]).to eq @target[:list][:L3]
         expect(@rendered_model[:path][3]).to eq @target[:list][:L4]
         expect(@rendered_model[:path][4]).to eq @target[:list][:L5]
-##        @target["content"][0] = "import QtQuick 2.0\n" +
-##                                "\n" +
-##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"TBD\"\n" +
-##                                "    parentLabel: \"TBD\"\n" +
-##                                "    parentLevel: XXXX\n" +
-##                                "    interactionComponent: \"XXXX\"\n" +
-##                                "    values: [\n" +
-##                                "      ListElement{value: \"XXXX\"}\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
-##                                "}" 
+
+        @target[:content][0] = "import QtQuick 2.0\n" +
+                               "\n" +
+                               "ListModel{\n" +
+                               "  ListElement{\n" +
+                               "    label: \"TBD\"\n" +
+                               "    parentLabel: \"TBD\"\n" +
+                               "    parentLevel: 5\n" +
+                               "    interactionComponent: \"\"\n" +
+#                               "    values: [\n" +
+#                               "      ListElement{value: \"TBD\"}\n" +
+#                               "    ]\n" +
+                               "    state: 0\n" +
+                               "  }\n" +
+                               "}\n" 
+        #puts @rendered_content_model[:content]
+        expect(@rendered_content_model[:content][0]).to eq @target[:content][0]
 ##        @target["content"][1] = "import QtQuick 2.0\n" +
 ##                                "\n" +
 ##                                "ListModel{\n" +
