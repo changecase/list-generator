@@ -93,7 +93,7 @@ describe ListGenerator do
         expect(@model[:categories].length).to eq 7
       end
 
-      # Node names
+      # PathNode names
       it "contains the top level hiearchy levels in the first category" do
         expect(@level_1_categories[0].name).to eq "All Settings"
         expect(@level_1_categories[1].name).to eq "Climate Settings"
@@ -129,7 +129,7 @@ describe ListGenerator do
         expect(@level_7_categories[1]).to      be_nil
       end
 
-      # Node parents
+      # PathNode parents
       it "contains nil for the parent of the top level hierarchy" do
         expect(@level_1_categories[0].parent).to be_nil
         expect(@level_1_categories[1].parent).to be_nil
@@ -165,7 +165,7 @@ describe ListGenerator do
         expect(@level_7_categories[1]).to        be_nil
       end
 
-      # Node children
+      # PathNode children
       it "contains the right children for the top level hierarchy" do
         expect(@level_1_categories[0].children).to eq ["Features"]
         expect(@level_1_categories[1].children).to eq []
@@ -200,46 +200,50 @@ describe ListGenerator do
         expect(@level_7_categories[0]).to          be_nil
         expect(@level_7_categories[1]).to          be_nil
       end
+
+      # ContentNodes
+      it "contains content nodes" do
+        expect(@model[:content]).not_to be_nil
+        expect(@model[:content].length).to eq 3
+        puts @model[:content]
+      end
+
+      it "creates an array of content items with the names of their parents, the type of content, and its value(s)" do
+        @content_1 = { 
+          label: "TBD",                 control: nil, values: "TBD", 
+          parent: {
+            label: "TBD", level: 5 }}
+        @content_2 = { 
+          label: "Station List Order",  control: nil, values: "ABC/123",
+          parent: {
+            label: "AM-FM-HD Radio", level: 4 }}
+        @content_3 = { 
+          label: "Auto Front Heater",   control: nil, values: "On/Off", 
+          parent: {
+            label: "Climate Settings", level: 1 }}
+
+        expect(@model[:content][0].label).to eq @content_1[:label]
+        expect(@model[:content][1].label).to eq @content_2[:label]
+        expect(@model[:content][2].label).to eq @content_3[:label]
+
+        expect(@model[:content][0].control).to eq @content_1[:control]
+        expect(@model[:content][1].control).to eq @content_2[:control]
+        expect(@model[:content][2].control).to eq @content_3[:control]
+
+        expect(@model[:content][0].parent[:label]).to eq @content_1[:parent][:label]
+        expect(@model[:content][1].parent[:label]).to eq @content_2[:parent][:label]
+        expect(@model[:content][2].parent[:label]).to eq @content_3[:parent][:label]
+
+        expect(@model[:content][0].parent[:level]).to eq @content_1[:parent][:level]
+        expect(@model[:content][1].parent[:level]).to eq @content_2[:parent][:level]
+        expect(@model[:content][2].parent[:level]).to eq @content_3[:parent][:level]
+
+        expect(@model[:content][0].values).to eq @content_1[:values]
+        expect(@model[:content][1].values).to eq @content_2[:values]
+        expect(@model[:content][2].values).to eq @content_3[:values]
+      end
     end
   end
-
-#
-#      it "creates an array of content items with the names of their parents, the type of content, and its value(s)" do
-#        @content_1 = { 
-#          label: "TBD",                 control: nil, values: "TBD", 
-#          parent: {
-#            label: "TBD", level: 5 }}
-#        @content_2 = { 
-#          label: "Station List Order",  control: nil, values: "ABC/123",
-#          parent: {
-#            label: "AM-FM-HD Radio", level: 4 }}
-#        @content_3 = { 
-#          label: "Auto Front Heater",   control: nil, values: "On/Off", 
-#          parent: {
-#            label: "Climate Settings", level: 1 }}
-#
-#        expect(@data_model[:content][0].label).to eq @content_1[:label]
-#        expect(@data_model[:content][1].label).to eq @content_2[:label]
-#        expect(@data_model[:content][2].label).to eq @content_3[:label]
-#
-#        expect(@data_model[:content][0].control).to eq @content_1[:control]
-#        expect(@data_model[:content][1].control).to eq @content_2[:control]
-#        expect(@data_model[:content][2].control).to eq @content_3[:control]
-#
-#        expect(@data_model[:content][0].parent[:label]).to eq @content_1[:parent][:label]
-#        expect(@data_model[:content][1].parent[:label]).to eq @content_2[:parent][:label]
-#        expect(@data_model[:content][2].parent[:label]).to eq @content_3[:parent][:label]
-#
-#        expect(@data_model[:content][0].parent[:level]).to eq @content_1[:parent][:level]
-#        expect(@data_model[:content][1].parent[:level]).to eq @content_2[:parent][:level]
-#        expect(@data_model[:content][2].parent[:level]).to eq @content_3[:parent][:level]
-#
-#        expect(@data_model[:content][0].values).to eq @content_1[:values]
-#        expect(@data_model[:content][1].values).to eq @content_2[:values]
-#        expect(@data_model[:content][2].values).to eq @content_3[:values]
-#      end
-#    end
-#  end
 
   describe ".render" do
     context "given a hash model of the data" do
