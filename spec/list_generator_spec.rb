@@ -34,6 +34,23 @@ describe ListGenerator do
     end
   end
 
+  describe ".get_headers" do
+    before(:context) do
+      @file = "ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed\n" +
+              "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE\n" +
+              "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE\n" +
+              "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
+      @data = ListGenerator.load(data: @file)
+    end
+    context "given the loaded data" do
+      it "returns the hiearchy level headers" do
+        @headers = ListGenerator.get_headers(dataset: @data, regular_expression: 'L\d+')
+
+        expect(@headers).to eq ["L1","L2","L3","L4","L5","L6","L7"]
+      end
+    end
+  end
+
   describe ".get_parent_index" do
     context "given the current index" do
       it "returns the index of the parent item" do

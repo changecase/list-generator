@@ -21,7 +21,7 @@ class ListGenerator
     @content = []
 
     # Isoloate just the headers
-    @path_levels = get_headers(dataset: data, regular_expression: 'L\d+')
+    @path_levels = self.get_headers(dataset: data, regular_expression: 'L\d+')
 
     # Add enough interior arrays for the number of category levels
     @path_levels.count.times do |level|
@@ -37,7 +37,6 @@ class ListGenerator
     data.each do |row|
       # Take a look at the path for the content
       @path_levels.each do |path_level|
-        @this_category = row[path_level]
         @this_index = @path_levels.find_index(path_level)
         @parent = ''
         @children = []
@@ -165,7 +164,7 @@ class ListGenerator
 
   # Private methods. These only need to be used to create users
   class << self
-    private def get_headers(dataset:, regular_expression:)
+    def get_headers(dataset:, regular_expression:)
       @headers = []
 
       dataset.headers.each do |header|
