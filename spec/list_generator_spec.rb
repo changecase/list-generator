@@ -209,15 +209,15 @@ describe ListGenerator do
 
       it "creates an array of content items with the names of their parents, the type of content, and its value(s)" do
         @content_1 = { 
-          label: "TBD",                 control: nil, values: "TBD", 
+          label: "TBD",                 control: nil, values: ["TBD"], 
           parent: {
             label: "TBD", level: 5 }}
         @content_2 = { 
-          label: "Station List Order",  control: nil, values: "ABC/123",
+          label: "Station List Order",  control: nil, values: ["ABC","123"],
           parent: {
             label: "AM-FM-HD Radio", level: 4 }}
         @content_3 = { 
-          label: "Auto Front Heater",   control: nil, values: "On/Off", 
+          label: "Auto Front Heater",   control: nil, values: ["On","Off"], 
           parent: {
             label: "Climate Settings", level: 1 }}
 
@@ -249,9 +249,9 @@ describe ListGenerator do
       before(:context) do
         @file = 
           "ID,L1,L2,L3,L4,L5,L6,L7,Content,Control,Values,End Point Needed,Path Needed\n" +
-          "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,,TBD,,TRUE\n" +
-          "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,,ABC/123,TRUE,TRUE\n" +
-          "3.02,Climate Settings,,,,,,,Auto Front Heater,,On/Off,TRUE,TRUE"
+          "2.02.03.02.01.01,All Settings,Features,Media,DAB,TBD,,,TBD,TBD,TBD,,TRUE\n" +
+          "2.02.03.01.03,All Settings,Features,Media,AM-FM-HD Radio,,,,Station List Order,toggle,ABC/123,TRUE,TRUE\n" +
+          "3.02,Climate Settings,,,,,,,Auto Front Heater,toggle,On/Off,TRUE,TRUE"
         @data = ListGenerator.load(data: @file)
         @list_model = ListGenerator.create(dataset: @data)
         @rendered_model = ListGenerator.render(model: @list_model, template: 'settings_list_model')
@@ -263,7 +263,7 @@ describe ListGenerator do
           list: {
             L1: [], L2: [], L3: [], L4: [], L5: []
           }, 
-          content: []
+          content: ""
         }
 
         @target[:list][:L1] = "import QtQuick 2.0\n" +
@@ -341,7 +341,7 @@ describe ListGenerator do
         expect(@rendered_model[:path][3]).to eq @target[:list][:L4]
         expect(@rendered_model[:path][4]).to eq @target[:list][:L5]
 
-        @target[:content][0] = "import QtQuick 2.0\n" +
+        @target[:content] = "import QtQuick 2.0\n" +
                                "\n" +
                                "ListModel{\n" +
                                "  ListElement{\n" +
@@ -349,26 +349,35 @@ describe ListGenerator do
                                "    parentLabel: \"TBD\"\n" +
                                "    parentLevel: 5\n" +
                                "    interactionComponent: \"\"\n" +
-#                               "    values: [\n" +
-#                               "      ListElement{value: \"TBD\"}\n" +
-#                               "    ]\n" +
+                               "    values: [\n" +
+                               "      ListElement{value: \"TBD\"}\n" +
+                               "    ]\n" +
                                "    state: 0\n" +
                                "  }\n" +
+                               "  ListElement{\n" +
+                                "    label: \"Station List Order\"\n" +
+                                "    parentLabel: \"AM-FM-HD Radio\"\n" +
+                                "    parentLevel: 4\n" +
+                                "    interactionComponent: \"ABC/123\"\n" +
+                               "    values: [\n" +
+                               "      ListElement{value: \"toggle\"}\n" +
+                               "    ]\n" +
+                                "  }\n" +
+                                "  ListElement{\n" +
+                                "    label: \"Auto Front Heater\"\n" +
+                                "    parentLabel: \"Climate Settings\"\n" +
+                                "    parentLevel: 1\n" +
+                                "    interactionComponent: \"On/Off\"\n" +
+                               "    values: [\n" +
+                               "      ListElement{value: \"toggle\"}\n" +
+                               "    ]\n" +
+                                "  }\n" +
                                "}\n" 
-        #puts @rendered_content_model[:content]
-        expect(@rendered_content_model[:content][0]).to eq @target[:content][0]
+        puts @rendered_content_model[:content]
+        #expect(@rendered_content_model[:content]).to eq @target[:content]
 ##        @target["content"][1] = "import QtQuick 2.0\n" +
 ##                                "\n" +
 ##                                "ListModel{\n" +
-##                                "  ListElement{\n" +
-##                                "    label: \"XXXXX\"\n" +
-##                                "    parentLabel: \"XXXX\"\n" +
-##                                "    parentLevel: XXXX\n" +
-##                                "    interactionComponent: \"XXXX\"\n" +
-##                                "    values: [\n" +
-##                                "      ListElement{value: \"XXXX\"}\n" +
-##                                "    ]\n" +
-##                                "  }\n" +
 ##                                "}" 
 ##        @target["content"][2] = "import QtQuick 2.0\n" +
 ##                                "\n" +

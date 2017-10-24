@@ -75,7 +75,7 @@ class ListGenerator
       # Create the content nodules
       @content_label = row["Content"]
       @content_control = row["Control"]
-      @content_values = row["Values"]
+      @content_values = row["Values"].split('/')
       @content_parent = {
         label: nil,
         level: nil
@@ -137,17 +137,22 @@ class ListGenerator
       )
     end
 
+    @c_obj = []
     model[:content].each do |item|
-      @formatted[:content].push(
-        @template.render(
-          'parent_name'     => item.parent[:label],
-          'parent_level'    => item.parent[:level],
-          'control_type'    => item.control,
-          'content_label'   => item.label,
-          'values'          => item.values
-        )
+      @c_obj.push(
+        'parent_name'     => item.parent[:label],
+        'parent_level'    => item.parent[:level],
+        'control_type'    => item.control,
+        'content_label'   => item.label,
+        'values'          => item.values
       )
     end
+
+    @formatted[:content].push(
+      @template.render(
+        'content_items' => @c_obj
+      )
+    )
 
     return {
       path: @formatted[:categories],
