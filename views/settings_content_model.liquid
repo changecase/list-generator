@@ -8,10 +8,10 @@ ListModel{
     parentLevel: {{item.parent_level}}
     interactionComponent: "{{item.control_type}}"
     values: [
-      {%- for value in item.values %}
-        ListElement{value: "{{value}}"}
-        {%- if value != item.values.last -%},{%- endif -%} 
-      {% endfor %}
+    {%- for value in item.values %}
+      ListElement{value: "{{value}}"}
+      {%- if value != item.values.last -%},{%- endif -%} 
+    {% endfor %}
     ]
     state: 0
   }

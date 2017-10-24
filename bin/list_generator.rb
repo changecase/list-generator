@@ -140,11 +140,13 @@ class ListGenerator
     @c_obj = []
     model[:content].each do |item|
       @c_obj.push(
-        'parent_name'     => item.parent[:label],
-        'parent_level'    => item.parent[:level],
-        'control_type'    => item.control,
-        'content_label'   => item.label,
-        'values'          => item.values
+        {
+          'parent_name'     => item.parent[:label],
+          'parent_level'    => item.parent[:level],
+          'control_type'    => item.control,
+          'content_label'   => item.label,
+          'values'          => item.values
+        }
       )
     end
 
@@ -156,7 +158,7 @@ class ListGenerator
 
     return {
       path: @formatted[:categories],
-      content: @formatted[:content]
+      content: @formatted[:content].join
     }
   end
 

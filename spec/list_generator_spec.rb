@@ -342,39 +342,43 @@ describe ListGenerator do
         expect(@rendered_model[:path][4]).to eq @target[:list][:L5]
 
         @target[:content] = "import QtQuick 2.0\n" +
-                               "\n" +
-                               "ListModel{\n" +
-                               "  ListElement{\n" +
-                               "    label: \"TBD\"\n" +
-                               "    parentLabel: \"TBD\"\n" +
-                               "    parentLevel: 5\n" +
-                               "    interactionComponent: \"\"\n" +
-                               "    values: [\n" +
-                               "      ListElement{value: \"TBD\"}\n" +
-                               "    ]\n" +
-                               "    state: 0\n" +
-                               "  }\n" +
-                               "  ListElement{\n" +
-                                "    label: \"Station List Order\"\n" +
-                                "    parentLabel: \"AM-FM-HD Radio\"\n" +
-                                "    parentLevel: 4\n" +
-                                "    interactionComponent: \"ABC/123\"\n" +
-                               "    values: [\n" +
-                               "      ListElement{value: \"toggle\"}\n" +
-                               "    ]\n" +
-                                "  }\n" +
-                                "  ListElement{\n" +
-                                "    label: \"Auto Front Heater\"\n" +
-                                "    parentLabel: \"Climate Settings\"\n" +
-                                "    parentLevel: 1\n" +
-                                "    interactionComponent: \"On/Off\"\n" +
-                               "    values: [\n" +
-                               "      ListElement{value: \"toggle\"}\n" +
-                               "    ]\n" +
-                                "  }\n" +
-                               "}\n" 
-        puts @rendered_content_model[:content]
-        #expect(@rendered_content_model[:content]).to eq @target[:content]
+                            "\n" +
+                            "ListModel{\n" +
+                            "  ListElement{\n" +
+                            "    label: \"TBD\"\n" +
+                            "    parentLabel: \"TBD\"\n" +
+                            "    parentLevel: 5\n" +
+                            "    interactionComponent: \"TBD\"\n" +
+                            "    values: [\n" +
+                            "      ListElement{value: \"TBD\"}\n" +
+                            "    ]\n" +
+                            "    state: 0\n" +
+                            "  }\n" +
+                            "  ListElement{\n" +
+                            "    label: \"Station List Order\"\n" +
+                            "    parentLabel: \"AM-FM-HD Radio\"\n" +
+                            "    parentLevel: 4\n" +
+                            "    interactionComponent: \"toggle\"\n" +
+                            "    values: [\n" +
+                            "      ListElement{value: \"ABC\"},\n" +
+                            "      ListElement{value: \"123\"}\n" +
+                            "    ]\n" +
+                            "    state: 0\n" +
+                            "  }\n" +
+                            "  ListElement{\n" +
+                            "    label: \"Auto Front Heater\"\n" +
+                            "    parentLabel: \"Climate Settings\"\n" +
+                            "    parentLevel: 1\n" +
+                            "    interactionComponent: \"toggle\"\n" +
+                            "    values: [\n" +
+                            "      ListElement{value: \"On\"},\n" +
+                            "      ListElement{value: \"Off\"}\n" +
+                            "    ]\n" +
+                            "    state: 0\n" +
+                            "  }\n" +
+                            "}\n" 
+        #puts @rendered_content_model[:content]
+        expect(@rendered_content_model[:content]).to eq @target[:content]
 ##        @target["content"][1] = "import QtQuick 2.0\n" +
 ##                                "\n" +
 ##                                "ListModel{\n" +
