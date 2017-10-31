@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 ListModel{
+  property int selectedIndex: -1
 {%- for category in hierarchy_levels %}
   ListElement{
     label: "{{category.name}}"
